@@ -142,7 +142,7 @@ WallForceCalculator::initAnalysis(const TrajectoryAnalysisSettings &settings,
         AnalysisDataPlotModulePointer plotm(
                 new AnalysisDataPlotModule(settings.plotSettings()));
         plotm->setFileName(fnDist_);
-        plotm->setTitle("Average forece");
+        plotm->setTitle("Average Wall Force");
         plotm->setXAxisIsTime();
         plotm->setYLabel("Force (kJ/mol/nm)");
         data_.addModule(plotm);
