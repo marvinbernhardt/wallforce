@@ -11,10 +11,14 @@ and C++ Standard Library as the one that was used for compiling
 GROMACS.
 
 ### cmake
-  mkdir build
-  cd build
-  cmake ..
-  make
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ### Makefile
-  make -f Makefile.pkg
+```bash
+make -f Makefile.pkg
+```
