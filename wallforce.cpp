@@ -44,10 +44,13 @@ enum AxisType
 {
     eAxisType_x,
     eAxisType_y,
-    eAxisType_z
+    eAxisType_z,
+    eAxisType_xn,
+    eAxisType_yn,
+    eAxisType_zn
 };
 //! Strings corresponding to AxisType
-const char *const c_axisTypes[] = { "x", "y", "z"};
+const char *const c_axisTypes[] = { "x", "y", "z", "xn", "yn", "zn"};
 
 
 class WallForceCalculator : public TrajectoryAnalysisModule
@@ -74,6 +77,8 @@ class WallForceCalculator : public TrajectoryAnalysisModule
         real                             wall_pos_;
         AxisType                         wall_axis_;
         real                             wall_k_;
+        int                              xyz;
+        bool                             negaxis;
 
         AnalysisData                     data_;
         AnalysisDataAverageModulePointer avem_;
@@ -93,7 +98,9 @@ WallForceCalculator::initOptions(IOptionsContainer          *options,
 {
     static const char *const desc[] = {
         "Calculate the forces of wall restraints.[PAR]",
-        "You can use selections."
+        "-axis can be x, y, z which stands for a wall that keeps particles close",
+        "to the origin along the axis. xn, yn, zn mean the wall keeps particles",
+        "away from the origin."
     };
 
     settings->setHelpText(desc);
@@ -140,6 +147,16 @@ WallForceCalculator::initAnalysis(const TrajectoryAnalysisSettings &settings,
         plotm->setYLabel("Force (kJ/mol/nm)");
         data_.addModule(plotm);
     }
+
+    switch (wall_axis_) {
+        case eAxisType_x: xyz = 0; negaxis = false; break;
+        case eAxisType_y: xyz = 1; negaxis = false; break;
+        case eAxisType_z: xyz = 2; negaxis = false; break;
+        case eAxisType_xn: xyz = 0; negaxis = true; break;
+        case eAxisType_yn: xyz = 1; negaxis = true; break;
+        case eAxisType_zn: xyz = 2; negaxis = true; break;
+        default: throw std::invalid_argument("unknown axis");
+    }
 }
 
 
@@ -153,20 +170,19 @@ WallForceCalculator::analyzeFrame(int frnr, const t_trxframe &fr, t_pbc *pbc,
     dh.startFrame(frnr, fr.time);
     int nr = sel.posCount();
     real ftot = 0.0;
-    real k_wall = 0.1;
-
-    int xyz;
-    if (wall_axis_ == eAxisType_x) xyz = 0;
-    else if (wall_axis_ == eAxisType_y) xyz = 1;
-    else if (wall_axis_ == eAxisType_z) xyz = 2;
-    else throw std::invalid_argument("unknown axis");
 
     for (int i = 0; i < nr; ++i)
     {
         SelectionPosition p = sel.position(i);
-        if (p.x()[xyz] > wall_pos_)
-        {
-            ftot += -k_wall * (p.x()[xyz] - wall_pos_);
+        if (!negaxis) {
+            if (p.x()[xyz] > wall_pos_) {
+                ftot += -wall_k_ * (p.x()[xyz] - wall_pos_);
+            }
+        }
+        else {
+            if (p.x()[xyz] < wall_pos_) {
+                ftot += -wall_k_ * (p.x()[xyz] - wall_pos_);
+            }
         }
     }
     dh.setPoint(0, ftot);

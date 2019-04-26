@@ -22,3 +22,24 @@ make
 ```bash
 make -f Makefile.pkg
 ```
+
+## Usage
+
+Example:
+```
+wallforce -quiet -f traj_comp.xtc -s topol.tpr -axis z -wallr 6.313665 -wallk 1000 <<< "name OW" -o wallforce.xvg
+```
+
+You can get help options with `wallforce -h`.
+
+Remember to specify the following arguments:
+```
+ -wallr  <real>             (0)
+           Wall position as distance from the origin
+ -axis   <enum>             (z)
+           Axis normal to the wall: x, y, z, xn, yn, zn
+ -wallk  <real>             (0)
+           Wall force constant
+```
+
+I did not test for the effect of walls close to periodic boundaries. There might be bugs!
