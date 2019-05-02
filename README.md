@@ -2,6 +2,11 @@
 An analysis tool for gromacs trajectories that computes the average force a
 harmonic wall applies on a selection of molecules/atoms.
 
+I did not test for the effect of walls close to periodic boundaries. In my 
+simulations the walls are not directly at the edge of the box.
+
+There might be bugs!
+
 ## Installation
 
 Source Gromacs installation first. Tested with Gromacs 2019.2
@@ -41,5 +46,3 @@ Remember to specify the following arguments:
  -wallk  <real>             (0)
            Wall force constant
 ```
-
-I did not test for the effect of walls close to periodic boundaries. There might be bugs!
