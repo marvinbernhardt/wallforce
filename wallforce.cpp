@@ -40,17 +40,18 @@
 using namespace gmx;
 
 
-enum AxisType
+enum class AxisType
 {
     eAxisType_x,
     eAxisType_y,
     eAxisType_z,
     eAxisType_xn,
     eAxisType_yn,
-    eAxisType_zn
-};
+    eAxisType_zn,
+    Count
+} : int;
 //! Strings corresponding to AxisType
-const char *const c_axisTypes[] = { "x", "y", "z", "xn", "yn", "zn"};
+EnumerationArray<AxisType, const char *>c_axisTypes = { "x", "y", "z", "xn", "yn", "zn"};
 
 
 class WallForceCalculator : public TrajectoryAnalysisModule
@@ -116,9 +117,8 @@ WallForceCalculator::initOptions(IOptionsContainer          *options,
     options->addOption(RealOption("wallr").store(&wall_pos_)
                            .description("Wall position as distance from the origin"));
 
-    options->addOption(EnumOption<AxisType>("axis").store(&wall_axis_)
-                           .enumValue(c_axisTypes)
-                           .description("Axis normal to the wall"));
+    options->addOption(EnumOption<AxisType>("axis").enumValue(c_axisTypes).store(&wall_axis_)
+            .description("Axis normal to the wall"));
 
     options->addOption(RealOption("wallk").store(&wall_k_)
                            .description("Wall force constant"));
