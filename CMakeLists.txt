@@ -24,7 +24,7 @@ else()
     set(GROMACS_SUFFIX ${GMX_SUFFIX})
 endif()
 
-find_package(GROMACS 5.1 REQUIRED)
+find_package(GROMACS 2021 REQUIRED)
 gromacs_check_double(GMX_DOUBLE)
 gromacs_check_compiler(CXX)
 include_directories(${GROMACS_INCLUDE_DIRS})

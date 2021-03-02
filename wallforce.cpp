@@ -40,8 +40,7 @@
 using namespace gmx;
 
 
-enum class AxisType
-{
+enum class AxisType {
     eAxisType_x,
     eAxisType_y,
     eAxisType_z,
@@ -49,7 +48,7 @@ enum class AxisType
     eAxisType_yn,
     eAxisType_zn,
     Count
-} : int;
+};
 //! Strings corresponding to AxisType
 EnumerationArray<AxisType, const char *>c_axisTypes = { "x", "y", "z", "xn", "yn", "zn"};
 
@@ -87,7 +86,7 @@ class WallForceCalculator : public TrajectoryAnalysisModule
 
 
 WallForceCalculator::WallForceCalculator()
-    : wall_pos_(0.0), wall_axis_(eAxisType_z), wall_k_(0.0)
+    : wall_pos_(0.0), wall_axis_(AxisType::eAxisType_z), wall_k_(0.0)
 {
     registerAnalysisDataset(&data_, "avedist");
 }
@@ -149,12 +148,12 @@ WallForceCalculator::initAnalysis(const TrajectoryAnalysisSettings &settings,
     }
 
     switch (wall_axis_) {
-        case eAxisType_x: xyz = 0; negaxis = false; break;
-        case eAxisType_y: xyz = 1; negaxis = false; break;
-        case eAxisType_z: xyz = 2; negaxis = false; break;
-        case eAxisType_xn: xyz = 0; negaxis = true; break;
-        case eAxisType_yn: xyz = 1; negaxis = true; break;
-        case eAxisType_zn: xyz = 2; negaxis = true; break;
+        case AxisType::eAxisType_x: xyz = 0; negaxis = false; break;
+        case AxisType::eAxisType_y: xyz = 1; negaxis = false; break;
+        case AxisType::eAxisType_z: xyz = 2; negaxis = false; break;
+        case AxisType::eAxisType_xn: xyz = 0; negaxis = true; break;
+        case AxisType::eAxisType_yn: xyz = 1; negaxis = true; break;
+        case AxisType::eAxisType_zn: xyz = 2; negaxis = true; break;
         default: throw std::invalid_argument("unknown axis");
     }
 }
