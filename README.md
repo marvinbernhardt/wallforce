@@ -9,7 +9,7 @@ There might be bugs!
 
 ## Installation
 
-Source Gromacs installation first. Tested with Gromacs 2019.2
+Source Gromacs installation first. Tested with Gromacs 2019.2. There is also an Gromacs 2021 branch!
 
 You will need to make sure that you use the same C++ compiler
 and C++ Standard Library as the one that was used for compiling
